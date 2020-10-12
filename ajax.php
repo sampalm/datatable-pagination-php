@@ -19,7 +19,7 @@ $searchValue = mysqli_real_escape_string($con, $_POST['search']['value']); // Se
 $searchQuery = "";
 
 if(!empty($searchValue)) {
-    $searchQuery = " and (author_id like %{$searchValue}% or title like %{$searchValue}%) ";
+    $searchQuery = " and (author_id like '%{$searchValue}%' or title like '%{$searchValue}%') ";
 }
 
 ## Number of records without filter
