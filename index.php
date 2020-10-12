@@ -67,13 +67,14 @@
 
     <script>
         $(document).ready(function() {
-            $('#empTable').DataTable({
+
+            var table = $('#empTable').DataTable({
                 'processing': true,
                 'serverSide': true,
                 'serverMethod': 'post',
                 "lengthChange": false,
                 'ajax': {
-                    'url': 'ajax.php'
+                    'url': 'ajax.php?filter=author'
                 },
                 "language": {
                     "search": "",
@@ -101,17 +102,34 @@
                 ]
             });
             $('#empTable').ready(()=>{
-                var filter = $('<div class="col-sm-12 col-md-6">');
-                filter.html(`
+                var filterDiv = $('<div class="col-sm-12 col-md-6">');
+                filterDiv.html(`
+                <form id="myForm">
                     <label>Autor
-                        <input type="radio" id="author" name="filtro" value="author">
+                        <input type="radio" id="author" name="filtro" value="author" checked>
                     </label>
                     <label>Titulo
                         <input type="radio" id="title" name="filtro" value="title">
                     </label>
+                    <label>Data
+                        <input type="radio" id="data" name="filtro" value="data">
+                    </label>
+                </form>
                 `)
                 .insertAfter('#empTable_wrapper div.col-md-6:nth-child(2)');
-            });
+            });    
+
+            $('#empTable').ready(()=>{
+                $('#myForm input').on('change', function() {
+                    table.ajax.url('ajax.php?filter='+$('input[name=filtro]:checked', '#myForm').val());
+                    checkURL(); 
+                });
+            });      
+            
+            function checkURL(){
+                console.log(table.ajax.url());
+            }
+
         });
     </script>
 </body>
