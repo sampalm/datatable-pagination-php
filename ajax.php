@@ -15,11 +15,28 @@ $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
 
 $searchValue = mysqli_real_escape_string($con, $_POST['search']['value']); // Search value
 
+$filter = $_GET["filter"];
+
 ## Search Query
 $searchQuery = "";
 
 if(!empty($searchValue)) {
+
     $searchQuery = " and (author_id like '%{$searchValue}%' or title like '%{$searchValue}%') ";
+
+    if(isset($filter)) {
+        switch($filter) {
+            case "author":
+                $searchQuery = " and (author_id like '%{$searchValue}%') ";
+                break;
+            case "title":
+                $searchQuery = " and (title like '%{$searchValue}%') ";
+                break;
+            case "data":
+                $searchQuery = " and (date like '%{$searchValue}%') ";
+                break;
+        }
+    }
 }
 
 ## Number of records without filter
